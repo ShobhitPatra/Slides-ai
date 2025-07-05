@@ -2,10 +2,12 @@
 import React, { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Button } from "./ui/button";
+import { signIn, useSession } from "next-auth/react";
+import { UserAvatar } from "./UserAvatar";
 
 const Navbar: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
+  const { data } = useSession();
   const navItems = [
     { name: "Report an Issue", href: "#" },
     { name: "Contribute", href: "#" },
@@ -35,12 +37,22 @@ const Navbar: React.FC = () => {
                   {item.name}
                 </a>
               ))}
-              <Button
-                variant={"outline"}
-                className="text-gray-300 rounded-full hover:bg-gray-300 hover:text-gray-800"
-              >
-                SignIn
-              </Button>
+              {!data?.user ? (
+                <Button
+                  onClick={() => signIn()}
+                  variant={"outline"}
+                  className="text-gray-300 rounded-full hover:bg-gray-300 hover:text-gray-800"
+                >
+                  SignIn
+                </Button>
+              ) : (
+                <div className="rounded-full m-auto ">
+                  <UserAvatar
+                    name={data?.user.name}
+                    image={data?.user.image as string}
+                  />
+                </div>
+              )}
             </div>
           </div>
 
