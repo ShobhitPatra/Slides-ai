@@ -19,4 +19,26 @@ model User {
   name  String
   email  String
   profileImage String
+  createdAt DateTime @default(now())
+
+  workspaces Workspace[]
+}
+model Workspace {
+  id String @id @default(uuid()) 
+  createdAt DateTime @default(now())
+
+  userId String
+  user User @relation(fields: [userId],references: [id])
+
+  Interactions Interaction[]
+}
+
+model Interaction{
+  id String @id @default(uuid())
+  promt  String
+  response  Json
+  createdAt DateTime @default(now())
+
+  workspaceId String
+  Workspace Workspace @relation(fields: [workspaceId],references: [id])
 }
