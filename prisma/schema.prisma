@@ -35,7 +35,7 @@ model Workspace {
 
 model Interaction{
   id String @id @default(uuid())
-  promt  String
+  prompt  String
   response  Json
   createdAt DateTime @default(now())
 

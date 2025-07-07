@@ -2,19 +2,60 @@
 import { useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { AnimatedBackgroundElements } from "../ui/AnimatedBackgroundElements";
-
 import Navbar from "../Navbar";
 import Footer from "../Footer";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+
+import { signIn, useSession } from "next-auth/react";
+import { Slide, useInteractionStore } from "@/stores/interaction-store";
+import { WorkspaceWithInteraction } from "@/types/WorkspaceWithInteraction";
+import { useWorkspaceStore } from "@/stores/worksapce-store";
 
 export const Landing = () => {
   const [inputValue, setInputValue] = useState<string>("");
   const [isHovered, setIsHovered] = useState<boolean>(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const session = useSession();
+  const router = useRouter();
+  const { setId, setSlides, setActiveSlide } = useInteractionStore();
+  const { setWorkspaceId, setWorkspace } = useWorkspaceStore();
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (inputValue.trim()) {
-      console.log("Submitted:", inputValue);
-      // Handle form submission here
+      if (!session.data?.user) {
+        signIn();
+      }
+      try {
+        const response = await axios.post(
+          `/api/generateSlides`,
+          {
+            prompt: inputValue.trim(),
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const result: WorkspaceWithInteraction = await response.data;
+        console.log(result);
+        // setting context for workspace
+        setWorkspace(result);
+        setWorkspaceId(result.id);
+        // setting context for interaction
+
+        const interaction = result.Interactions[0];
+        const slides = interaction.response as unknown as Slide[];
+        setId(interaction.id);
+        setSlides(slides);
+        setActiveSlide(slides[0]);
+        router.push(`/workspace/${result.id}`);
+      } catch (error) {
+        console.error(error);
+      }
     }
   };
   return (
