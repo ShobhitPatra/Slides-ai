@@ -52,7 +52,7 @@ export const Landing = () => {
         setId(interaction.id);
         setSlides(slides);
         setActiveSlide(slides[0]);
-        router.push(`/workspace/${result.id}`);
+        router.push(`/workspace/${result.id}/interaction/${interaction.id}`);
       } catch (error) {
         console.error(error);
       }
