@@ -6,10 +6,7 @@ export const WorkspaceScreen = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-slate-900 to-black relative overflow-hidden">
       <Topbar />
-      <div
-        className="flex min-h-screen
-      "
-      >
+      <div className="flex  ">
         <Toolbar />
         <CanvasArea />
       </div>
