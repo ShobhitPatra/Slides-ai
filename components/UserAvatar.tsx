@@ -9,7 +9,7 @@
 // import { LogOut } from "lucide-react";
 // import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 // import { signOut } from "next-auth/react";
-import { AvatarImage } from "@radix-ui/react-avatar";
+import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 
 export const UserAvatar = ({
   name,
@@ -44,9 +44,9 @@ export const UserAvatar = ({
     //     <span className="text-gray-300">{name}</span>
     //   </TooltipContent>
     // </Tooltip>
-    <div>
+    <Avatar>
       <AvatarImage src={image} />
       {name}
-    </div>
+    </Avatar>
   );
 };

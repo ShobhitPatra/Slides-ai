@@ -1,8 +1,9 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { Slide } from "@/stores/interaction-store";
 import { Canvas, Textbox } from "fabric";
 import { INTERACTION_EXAMPLE } from "@/examples/interaction-example";
+import { useCanvasStore } from "@/stores/canvas-store";
 
 const DUMMY_SLIDE = INTERACTION_EXAMPLE.Interactions[0].response[0];
 interface CanvasEditorProps {
@@ -11,7 +12,7 @@ interface CanvasEditorProps {
 
 export const CanvasEditor = ({ slide }: CanvasEditorProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [canvas, setCanvas] = useState<Canvas | null>(null);
+  const { setCanvas } = useCanvasStore();
 
   useEffect(() => {
     if (canvasRef.current) {
@@ -42,7 +43,7 @@ export const CanvasEditor = ({ slide }: CanvasEditorProps) => {
       // bullet points
       let topOffset = 170;
       Object.values(DUMMY_SLIDE.bulletPoints).forEach((point) => {
-        const bullet = new Textbox(`>${DUMMY_SLIDE.slideNo} ${point}`, {
+        const bullet = new Textbox(`* ${point}`, {
           top: topOffset,
           width: 600,
           left: 100,
@@ -59,7 +60,7 @@ export const CanvasEditor = ({ slide }: CanvasEditorProps) => {
         initCanvas.dispose();
       };
     }
-  }, [slide]);
+  }, [slide, setCanvas]);
 
   return <canvas ref={canvasRef} />;
 };
