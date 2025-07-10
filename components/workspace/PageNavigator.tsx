@@ -1,53 +1,53 @@
 import { useInteractionStore } from "@/stores/interaction-store";
 import { ArrowLeftSquare, ArrowRightSquare } from "lucide-react";
-import { useState } from "react";
 
 export const PageNavigator = () => {
-  const { currentSlideIndex, setCurrentSlideIndex, setActiveSlide, slides } =
+  const { currentSlideIndex, setCurrentSlideIndex, slides } =
     useInteractionStore();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const nextSlide = () => {
     if (!slides || currentSlideIndex >= slides.length - 1) return;
-    setIsLoading(true);
-    const nextSlideIndex = currentSlideIndex + 1;
-    setCurrentSlideIndex(nextSlideIndex);
-    setActiveSlide(slides[nextSlideIndex]);
-    console.log(slides[nextSlideIndex]);
-    setIsLoading(false);
+    setCurrentSlideIndex(currentSlideIndex + 1);
   };
+
   const previousSlide = () => {
     if (!slides || currentSlideIndex <= 0) return;
-    setIsLoading(true);
-    const prevSlideIndex = currentSlideIndex - 1;
-    setCurrentSlideIndex(prevSlideIndex);
-    setActiveSlide(slides[prevSlideIndex]);
-    console.log(slides[prevSlideIndex]);
-
-    setIsLoading(false);
+    setCurrentSlideIndex(currentSlideIndex - 1);
   };
 
+  const canGoNext = slides && currentSlideIndex < slides.length - 1;
+  const canGoPrevious = slides && currentSlideIndex > 0;
+
   return (
-    <div className=" flex gap-2">
+    <div className="flex gap-2 items-center">
       <button
-        disabled={isLoading}
+        disabled={!canGoPrevious}
         aria-label="Go to the previous slide"
         onClick={previousSlide}
+        className="disabled:opacity-50 disabled:cursor-not-allowed"
       >
         <ArrowLeftSquare
-          onClick={previousSlide}
-          className="text-gray-300 hover:text-gray-900 hover:bg-green-300 "
+          className={`text-gray-300 transition-colors ${
+            canGoPrevious ? "hover:text-gray-900 hover:bg-green-300" : ""
+          }`}
         />
       </button>
-      <p className="bg-gray-300 w-6 text-gray-900 font-bold rounded-sm flex items-center justify-center">
+
+      <p className="bg-gray-300 w-8 h-8 text-gray-900 font-bold rounded-sm flex items-center justify-center">
         {currentSlideIndex + 1}
       </p>
+
       <button
-        disabled={isLoading}
+        disabled={!canGoNext}
         aria-label="Go to the next slide"
         onClick={nextSlide}
+        className="disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        <ArrowRightSquare className="text-gray-300 hover:text-gray-900 hover:bg-red-300 " />
+        <ArrowRightSquare
+          className={`text-gray-300 transition-colors ${
+            canGoNext ? "hover:text-gray-900 hover:bg-red-300" : ""
+          }`}
+        />
       </button>
     </div>
   );

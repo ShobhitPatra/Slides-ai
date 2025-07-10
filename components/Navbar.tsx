@@ -47,10 +47,7 @@ const Navbar: React.FC = () => {
                 </Button>
               ) : (
                 <div className="rounded-full m-auto ">
-                  <UserAvatar
-                    name={data?.user.name}
-                    image={data?.user.image as string}
-                  />
+                  <UserAvatar image={data?.user.image as string} />
                 </div>
               )}
             </div>

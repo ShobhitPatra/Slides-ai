@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Loader2 } from "lucide-react";
 import { AnimatedBackgroundElements } from "../ui/AnimatedBackgroundElements";
 import Navbar from "../Navbar";
 import Footer from "../Footer";
@@ -15,6 +15,7 @@ import { useWorkspaceStore } from "@/stores/worksapce-store";
 export const Landing = () => {
   const [inputValue, setInputValue] = useState<string>("");
   const [isHovered, setIsHovered] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const session = useSession();
   const router = useRouter();
@@ -25,6 +26,7 @@ export const Landing = () => {
     e.preventDefault();
 
     if (inputValue.trim()) {
+      setIsLoading(true);
       if (!session.data?.user) {
         signIn();
       }
@@ -40,6 +42,9 @@ export const Landing = () => {
             },
           }
         );
+        if (response.status === 402) {
+          signIn();
+        }
         const result: WorkspaceWithInteraction = await response.data;
         console.log(result);
         // setting context for workspace
@@ -55,6 +60,8 @@ export const Landing = () => {
         router.push(`/workspace/${result.id}/interaction/${interaction.id}`);
       } catch (error) {
         console.error(error);
+      } finally {
+        setIsLoading(false);
       }
     }
   };
@@ -83,6 +90,7 @@ export const Landing = () => {
               <div className="absolute inset-0 bg-gradient-to-r from-purple-600/20 to-blue-600/20 rounded-2xl blur-lg group-hover:from-purple-600/30 group-hover:to-blue-600/30 transition-all duration-300"></div>
               <div className="relative flex items-center bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl overflow-hidden group-hover:border-white/20 transition-all duration-300">
                 <input
+                  disabled={isLoading}
                   type="text"
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
@@ -96,11 +104,15 @@ export const Landing = () => {
                   className="relative m-2 px-6 py-3 sm:py-4 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white font-medium rounded-xl transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-lg hover:shadow-purple-500/25"
                 >
                   <span className="flex items-center gap-2">
-                    <ArrowRight
-                      className={`w-4 h-4 transition-transform duration-300 ${
-                        isHovered ? "translate-x-1" : ""
-                      }`}
-                    />
+                    {isLoading ? (
+                      <Loader2 className="animate-spin" />
+                    ) : (
+                      <ArrowRight
+                        className={`w-4 h-4 transition-transform duration-300 ${
+                          isHovered ? "translate-x-1" : ""
+                        }`}
+                      />
+                    )}
                   </span>
                   <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-purple-600/0 to-blue-600/0 hover:from-purple-600/20 hover:to-blue-600/20 transition-all duration-300"></div>
                 </button>

@@ -1,4 +1,5 @@
 import { create } from "zustand";
+
 export interface Slide {
   slideNo: string;
   title: string;
@@ -9,22 +10,34 @@ export interface Slide {
 interface InteractionStoretype {
   id: string | null;
   setId: (id: string) => void;
+
   slides: Slide[] | null;
   setSlides: (slides: Slide[]) => void;
+
   currentSlideIndex: number;
-  setCurrentSlideIndex: (currentSlideIndex: number) => void;
+  setCurrentSlideIndex: (index: number) => void;
+
   activeSlide: Slide | null;
-  setActiveSlide: (activeSlide: Slide) => void;
+  setActiveSlide: (slide: Slide | null) => void;
 }
 
-export const useInteractionStore = create<InteractionStoretype>((set) => ({
+export const useInteractionStore = create<InteractionStoretype>((set, get) => ({
   id: null,
-  setId: (id: string) => set({ id }),
+  setId: (id) => set({ id }),
+
   slides: null,
-  setSlides: (slides: Slide[]) => set({ slides }),
+  setSlides: (slides) => {
+    set({ slides });
+    const currentIndex = get().currentSlideIndex;
+    set({ activeSlide: slides?.[currentIndex] ?? null });
+  },
+
   currentSlideIndex: 0,
-  setCurrentSlideIndex: (currentSlideIndex: number) =>
-    set({ currentSlideIndex }),
+  setCurrentSlideIndex: (index) => {
+    const slides = get().slides;
+    set({ currentSlideIndex: index, activeSlide: slides?.[index] ?? null });
+  },
+
   activeSlide: null,
-  setActiveSlide: (activeSlide: Slide) => set({ activeSlide }),
+  setActiveSlide: (slide) => set({ activeSlide: slide }),
 }));

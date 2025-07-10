@@ -1,52 +1,22 @@
 "use client";
-// import {
-//   DropdownMenu,
-//   DropdownMenuLabel,
-//   DropdownMenuContent,
-//   DropdownMenuTrigger,
-// } from "./ui/dropdown-menu";
-// import { Avatar } from "./ui/avatar";
-// import { LogOut } from "lucide-react";
-// import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
-// import { signOut } from "next-auth/react";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
+import { LogOut } from "lucide-react";
+import { signOut } from "next-auth/react";
 
-export const UserAvatar = ({
-  name,
-  image,
-}: {
-  name: string | null | undefined;
-  image: string | Blob | undefined;
-}) => {
+export const UserAvatar = ({ image }: { image: string | Blob | undefined }) => {
   return (
-    // <Tooltip>
-    //   <TooltipTrigger>
-    //     <DropdownMenu>
-    //       <DropdownMenuTrigger>
-    //         <Avatar className="m-auto">
-    //           <AvatarImage src={image} />
-    //         </Avatar>
-    //       </DropdownMenuTrigger>
-    //       <DropdownMenuContent className="bg-gray-800 hover:bg-gray-700 text-gray-300  hover:text-gray-200 ">
-    //         <DropdownMenuLabel
-    //           onClick={() => signOut()}
-    //           className="flex justify-center items-center gap-2.5 hover:cursor-pointer"
-    //         >
-    //           SignOut{" "}
-    //           <span>
-    //             <LogOut size={12} />
-    //           </span>
-    //         </DropdownMenuLabel>
-    //       </DropdownMenuContent>
-    //     </DropdownMenu>
-    //   </TooltipTrigger>
-    //   <TooltipContent>
-    //     <span className="text-gray-300">{name}</span>
-    //   </TooltipContent>
-    // </Tooltip>
-    <Avatar>
-      <AvatarImage src={image} />
-      {name}
-    </Avatar>
+    <div className="flex justify-center items-center">
+      <Avatar className="flex flex-col items-center">
+        <AvatarImage
+          className="h-8 w-8 rounded-full hover:scale-105 transition-all"
+          src={image}
+        />
+      </Avatar>
+      <LogOut
+        onClick={() => signOut()}
+        className="text-gray-300 hover:cursor-pointer hover:scale-105 transition-all"
+        size={16}
+      />
+    </div>
   );
 };
