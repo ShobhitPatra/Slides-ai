@@ -1,11 +1,6 @@
+import { Slide } from "@/app/generated/prisma";
+import { JsonValue } from "@/app/generated/prisma/runtime/library";
 import { create } from "zustand";
-
-export interface Slide {
-  slideNo: string;
-  title: string;
-  content: string;
-  bulletPoints: Record<string, string>;
-}
 
 interface InteractionStoretype {
   id: string | null;
@@ -19,6 +14,9 @@ interface InteractionStoretype {
 
   activeSlide: Slide | null;
   setActiveSlide: (slide: Slide | null) => void;
+
+  saveCanvasToCurrentSlide: (canvasJson: JsonValue) => void;
+  saveCanvasToSlide: (slideIndex: number, canvasJson: JsonValue) => void;
 }
 
 export const useInteractionStore = create<InteractionStoretype>((set, get) => ({
@@ -40,4 +38,56 @@ export const useInteractionStore = create<InteractionStoretype>((set, get) => ({
 
   activeSlide: null,
   setActiveSlide: (slide) => set({ activeSlide: slide }),
+
+  saveCanvasToCurrentSlide: (canvasJson: JsonValue) => {
+    const { activeSlide, currentSlideIndex, slides } = get();
+    if (!activeSlide || !slides) {
+      console.warn("No active slide or slides available to save canvas");
+      return;
+    }
+
+    const updatedSlide: Slide = {
+      ...activeSlide,
+      canvasJson: canvasJson,
+    };
+
+    const updatedSlides = [...slides];
+    updatedSlides[currentSlideIndex] = updatedSlide;
+
+    set({
+      slides: updatedSlides,
+      activeSlide: updatedSlide,
+    });
+
+    console.log(`Canvas saved to slide ${currentSlideIndex + 1}`);
+  },
+
+  saveCanvasToSlide: (slideIndex: number, canvasJson: JsonValue) => {
+    const { slides, currentSlideIndex } = get();
+    if (!slides || slideIndex < 0 || slideIndex >= slides.length) {
+      console.warn("Invalid slide index or no slides available");
+      return;
+    }
+
+    const slideToUpdate = slides[slideIndex];
+    const updatedSlide: Slide = {
+      ...slideToUpdate,
+      canvasJson: canvasJson,
+    };
+
+    const updatedSlides = [...slides];
+    updatedSlides[slideIndex] = updatedSlide;
+
+    const newActiveSlide =
+      slideIndex === currentSlideIndex
+        ? updatedSlide
+        : slides[currentSlideIndex];
+
+    set({
+      slides: updatedSlides,
+      activeSlide: newActiveSlide,
+    });
+
+    console.log(`Canvas saved to slide ${slideIndex + 1}`);
+  },
 }));

@@ -37,7 +37,11 @@ export async function GET(req: Request) {
         id: workspaceId,
       },
       include: {
-        Interactions: true,
+        Interactions: {
+          include: {
+            response: true,
+          },
+        },
       },
     });
     return NextResponse.json(workspace);

@@ -1,3 +1,4 @@
+import { Slide } from "@/app/generated/prisma";
 import { authOptions } from "@/lib/authOptions";
 import { prisma } from "@/lib/db";
 import { generateSlides } from "@/lib/gemini";
@@ -31,7 +32,13 @@ export async function POST(req: Request) {
       return NextResponse.json({ msg: "no prompt found" }, { status: 400 });
     }
     const result = await generateSlides(prompt as string);
-
+    const slides = result.map((slide: Slide) => ({
+      slideNo: slide.slideNo as number,
+      title: slide.title,
+      content: slide.content,
+      bulletPoints: slide.bulletPoints,
+      canvasJson: null,
+    }));
     if (!result) {
       return NextResponse.json(
         { msg: "failed to generate response" },
@@ -43,13 +50,19 @@ export async function POST(req: Request) {
         userId: existingUser.id,
         Interactions: {
           create: {
-            response: result,
             prompt,
+            response: {
+              create: slides,
+            },
           },
         },
       },
       include: {
-        Interactions: true,
+        Interactions: {
+          include: {
+            response: true,
+          },
+        },
       },
     });
 

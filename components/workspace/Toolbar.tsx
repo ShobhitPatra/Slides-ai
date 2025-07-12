@@ -5,7 +5,7 @@ import { Separator } from "../ui/separator";
 
 export const Toolbar = () => {
   return (
-    <div className="flex flex-wrap flex-col gap-4 py-4 px-2  md:w-1/4 md:h-8/10 m-4 rounded-md bg-slate-900  border-r border-b border-slate-800 shadow-sm ">
+    <div className="flex flex-wrap flex-col gap-4 py-4 px-2  md:w-1/4 md:h-8/10 m-4 rounded-md bg-slate-900 border-white shadow-sm ">
       <TextTools />
       <Separator className="bg-gray-600" />
       <BackgroundColorTool />

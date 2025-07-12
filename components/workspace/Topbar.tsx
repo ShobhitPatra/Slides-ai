@@ -26,7 +26,9 @@ export const Topbar: React.FC = () => {
           </div>
 
           <PageNavigator />
+
           <ExportButton />
+
           {/* Mobile menu button */}
           <div className="md:hidden">
             <button

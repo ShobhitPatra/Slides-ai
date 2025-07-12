@@ -7,8 +7,8 @@ export const WorkspaceScreen = () => {
     <div className="min-h-screen bg-gradient-to-br from-black via-slate-900 to-black relative overflow-hidden">
       <Topbar />
       <div className="flex  ">
-        <Toolbar />
         <CanvasArea />
+        <Toolbar />
       </div>
     </div>
   );

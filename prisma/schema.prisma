@@ -36,9 +36,25 @@ model Workspace {
 model Interaction{
   id String @id @default(uuid())
   prompt  String
-  response  Json
+  response  Slide[]
   createdAt DateTime @default(now())
 
   workspaceId String
-  Workspace Workspace @relation(fields: [workspaceId],references: [id])
+  workspace Workspace @relation(fields: [workspaceId],references: [id])
+}
+
+
+model Slide{
+  id String @id @default(uuid())
+  slideNo Int 
+  title String
+  content String
+  bulletPoints Json
+  canvasJson Json?
+  
+  interactionId String
+  interaction   Interaction @relation(fields: [interactionId], references: [id])
+  @@unique([interactionId, slideNo])
+
+  
 }

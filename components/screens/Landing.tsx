@@ -8,9 +8,11 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 
 import { signIn, useSession } from "next-auth/react";
-import { Slide, useInteractionStore } from "@/stores/interaction-store";
+import { useInteractionStore } from "@/stores/interaction-store";
 import { WorkspaceWithInteraction } from "@/types/WorkspaceWithInteraction";
 import { useWorkspaceStore } from "@/stores/worksapce-store";
+import { Slide } from "@/app/generated/prisma";
+import { InteractionWithResponse } from "@/types/InteractionWithResponse";
 
 export const Landing = () => {
   const [inputValue, setInputValue] = useState<string>("");
@@ -43,17 +45,18 @@ export const Landing = () => {
           }
         );
         if (response.status === 402) {
+          console.log("edirecring to sigin ");
           signIn();
         }
         const result: WorkspaceWithInteraction = await response.data;
-        console.log(result);
         // setting context for workspace
         setWorkspace(result);
         setWorkspaceId(result.id);
         // setting context for interaction
-
-        const interaction = result.Interactions[0];
+        const interaction = result.Interactions[0] as InteractionWithResponse;
+        console.log(interaction);
         const slides = interaction.response as unknown as Slide[];
+        console.log(`here`);
         setId(interaction.id);
         setSlides(slides);
         setActiveSlide(slides[0]);
