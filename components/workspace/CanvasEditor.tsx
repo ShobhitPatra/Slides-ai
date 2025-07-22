@@ -41,8 +41,6 @@ export const CanvasEditor = () => {
         fill: "#1f2937",
       });
       canvas.add(title);
-      console.log("Added title:", slideData.title);
-
       // content
       if (slideData.content) {
         const content = new Textbox(slideData.content, {
@@ -58,7 +56,7 @@ export const CanvasEditor = () => {
       // bullet points
       let topOffset = 170;
       const bulletPoints = Object.values(slideData.bulletPoints || {});
-      bulletPoints.forEach((point, index) => {
+      bulletPoints.forEach((point) => {
         const bullet = new Textbox(`• ${point}`, {
           width: 600,
           top: topOffset,
@@ -67,12 +65,10 @@ export const CanvasEditor = () => {
           fill: "#4b5563",
         });
         canvas.add(bullet);
-        console.log(`Added bullet ${index + 1}:`, point);
         topOffset += 40;
       });
 
       canvas.renderAll();
-      console.log("canvas rendered successfully");
     } catch (error) {
       console.error("Error rendering slide:", error);
     }
@@ -99,7 +95,6 @@ export const CanvasEditor = () => {
       console.error("Error initializing canvas:", error);
     }
 
-    // Cleanup
     return () => {
       if (fabricCanvasRef.current) {
         try {
@@ -110,9 +105,9 @@ export const CanvasEditor = () => {
         fabricCanvasRef.current = null;
       }
     };
-  }, [setCanvas]); // Empty dependency array to run only once
+  }, [setCanvas]);
 
-  // Handle slide changes (runs when currentSlideIndex changes)
+  // handle slide changes (runs when currentSlideIndex changes)
   useEffect(() => {
     const canvas = fabricCanvasRef.current;
     if (!canvas || !slide) return;
@@ -148,8 +143,6 @@ export const CanvasEditor = () => {
     // Load new slide content (only if actually changing slides)
     if (previousSlideNo !== newSlideNo) {
       const json = slide.canvasJson;
-      console.log(`Loading slide ${newSlideNo}, has saved JSON: ${!!json}`);
-
       if (json && typeof json === "object" && !Array.isArray(json)) {
         console.log("Loading saved canvas for slide:", newSlideNo);
         console.log("Canvas JSON:", json);
@@ -159,9 +152,9 @@ export const CanvasEditor = () => {
             "Canvas loaded from JSON, objects count:",
             canvas.getObjects().length
           );
+
           canvas.renderAll();
 
-          // Force a re-render after a short delay to ensure everything is visible
           setTimeout(() => {
             canvas.renderAll();
             console.log("Canvas re-rendered");
@@ -171,8 +164,6 @@ export const CanvasEditor = () => {
         console.log("Rendering fresh slide:", newSlideNo);
         renderSlide(canvas, slide);
       }
-    } else {
-      console.log("Same slide, skipping render");
     }
   }, [currentSlideIndex, renderSlide, saveCanvasToSlide, slide]);
 

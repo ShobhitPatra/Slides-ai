@@ -1,28 +1,26 @@
 "use client";
 import { WorkspaceScreen } from "@/components/screens/Workspace";
-import { Slide, useInteractionStore } from "@/stores/interaction-store";
-import { useParams } from "next/navigation";
+import { useInteractionStore } from "@/stores/interaction-store";
 import axios from "axios";
 import { useEffect } from "react";
-import { WorkspaceWithInteraction } from "@/types/WorkspaceWithInteraction";
+import { InteractionWithResponse } from "@/types/InteractionWithResponse";
+import { Slide } from "@/app/generated/prisma";
 
 export default function Workspace() {
-  const { workspaceId, interactionId } = useParams();
   const { setId, setSlides, setActiveSlide } = useInteractionStore();
   useEffect(() => {
     const fetchWorkspace = async () => {
-      if (!workspaceId) return;
+      const interactionId = localStorage.getItem("interactionId");
+      if (!interactionId) return;
       try {
         const response = await axios.get(
-          `/api/workspace?workspaceId=${workspaceId}`
+          `/api/workspace?interactionId=${interactionId}`
         );
-        const result: WorkspaceWithInteraction = await response.data;
-        const interaction = result.Interactions.find(
-          (i) => i.id == interactionId
-        );
-        if (!interaction) return;
-        setId(interaction.id);
-        const slides = interaction.response as unknown as Slide[];
+        const result: InteractionWithResponse = await response.data;
+
+        if (!result) return;
+        setId(result.id);
+        const slides = result.response as unknown as Slide[];
         setSlides(slides);
         setActiveSlide(slides[0]);
       } catch (error) {
@@ -30,7 +28,7 @@ export default function Workspace() {
       }
     };
     fetchWorkspace();
-  }, [workspaceId, interactionId]);
+  }, []);
   return (
     <>
       <WorkspaceScreen />

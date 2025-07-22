@@ -8,10 +8,8 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 
 import { signIn, useSession } from "next-auth/react";
-import { useInteractionStore } from "@/stores/interaction-store";
 import { WorkspaceWithInteraction } from "@/types/WorkspaceWithInteraction";
 import { useWorkspaceStore } from "@/stores/worksapce-store";
-import { Slide } from "@/app/generated/prisma";
 import { InteractionWithResponse } from "@/types/InteractionWithResponse";
 
 export const Landing = () => {
@@ -21,7 +19,6 @@ export const Landing = () => {
 
   const session = useSession();
   const router = useRouter();
-  const { setId, setSlides, setActiveSlide } = useInteractionStore();
   const { setWorkspaceId, setWorkspace } = useWorkspaceStore();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -54,12 +51,8 @@ export const Landing = () => {
         setWorkspaceId(result.id);
         // setting context for interaction
         const interaction = result.Interactions[0] as InteractionWithResponse;
-        console.log(interaction);
-        const slides = interaction.response as unknown as Slide[];
-        console.log(`here`);
-        setId(interaction.id);
-        setSlides(slides);
-        setActiveSlide(slides[0]);
+        localStorage.setItem("interactionId", interaction.id);
+
         router.push(`/workspace/${result.id}/interaction/${interaction.id}`);
       } catch (error) {
         console.error(error);
