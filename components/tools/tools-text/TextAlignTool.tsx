@@ -25,6 +25,7 @@ export const TextAlignTool = () => {
   ];
   const [align, setAlign] = useState<string>("center");
   const { canvas, getSelectedObject } = useCanvasStore();
+  console.log(align);
   const handleAlign = (align: string) => {
     setAlign(align);
     if (!canvas) return;
