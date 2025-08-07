@@ -1,36 +1,61 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Slides AI
 
-## Getting Started
+Slides AI is a web application that generates editable presentation slides from a text prompt. Slides can be customized and exported as PDF or PowerPoint.
 
-First, run the development server:
+## Features
+
+- AI-based slide generation from a topic prompt
+- Editor with toolbox (fonts, colors, alignment, shapes)
+- Export to PDF or PowerPoint
+- Google login/logout support
+
+## Tech Stack
+
+- Frontend: Next.js, React, Tailwind CSS, Zustand, Shadcn UI
+- Backend: Next.js API Routes, Prisma ORM, PostgreSQL
+- Authentication: NextAuth
+- AI: Gemini (Google GenAI SDK)
+- Canvas Editing: Fabric.js
+- Export: pptxgenjs, jsPDF
+
+## Screenshots
+
+### Landing
+
+![Landing Page](./screenshots/slides_landing.png)
+
+### Workspace
+
+![Editor](./screenshots/slides_workspace.png)
+
+## Local Setup
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/yourusername/slides-ai
+cd slides-ai
+```
+
+### 2. Install dependencies
+
+```bash
+npm install
+```
+
+### 4. Create .env file in the root directory
+
+- Duplicate `.env.example` to `.env`
+- Replace dummy values with actual variables
+
+### 5. Set up the database
+
+```bash
+npm run db:push
+```
+
+### 6. Start the development server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
