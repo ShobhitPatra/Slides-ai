@@ -1,12 +1,15 @@
 import React from "react";
-import { Github, Twitter, Linkedin, Instagram } from "lucide-react";
+import { Github, Twitter, Linkedin } from "lucide-react";
 
 const Footer: React.FC = () => {
   const socialLinks = [
-    { name: "GitHub", icon: Github, href: "#" },
-    { name: "Twitter", icon: Twitter, href: "#" },
-    { name: "LinkedIn", icon: Linkedin, href: "#" },
-    { name: "Instagram", icon: Instagram, href: "#" },
+    { name: "GitHub", icon: Github, href: "https://github.com/ShobhitPatra" },
+    { name: "Twitter", icon: Twitter, href: "https://x.com/shobhit_tw" },
+    {
+      name: "LinkedIn",
+      icon: Linkedin,
+      href: "https://www.linkedin.com/in/shobhit-patra-4a4243264/",
+    },
   ];
 
   return (
@@ -32,9 +35,10 @@ const Footer: React.FC = () => {
 
           {/* Copyright */}
           <div className="text-center">
-            <p className="text-gray-500 text-sm">
-              Made by <span>Shobhit Patra</span>
-            </p>
+            <h6 className="font-mono text-gray-500 text-sm">
+              <span className="text-gray-20">SlidesAi</span>@
+              <span className="text-gray-20">Shobhit Patra</span>
+            </h6>
           </div>
         </div>
       </div>

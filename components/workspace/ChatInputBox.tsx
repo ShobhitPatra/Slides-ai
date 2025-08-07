@@ -1,32 +1,58 @@
 "use client";
+
 import { useWorkspaceStore } from "@/stores/worksapce-store";
+import { InteractionWithResponse } from "@/types/InteractionWithResponse";
+import { WorkspaceWithInteraction } from "@/types/WorkspaceWithInteraction";
 import axios from "axios";
 import { Loader2, SendHorizonal } from "lucide-react";
+import { signIn, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 export const ChatInputBox = () => {
   const [inputValue, setInputValue] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isHovered, setIsHovered] = useState<boolean>(false);
-  const { id: workspaceId } = useWorkspaceStore();
+  const { setWorkspaceId, setWorkspace } = useWorkspaceStore();
+
+  const router = useRouter();
+  const session = useSession();
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
-    try {
-      if (!workspaceId) return;
-      await axios.post(
-        `/api/chat?workspaceId=${workspaceId}`,
-        { message: inputValue.trim() },
-        {
-          headers: {
-            "Content-Type": "application/json",
+
+    if (inputValue.trim()) {
+      setIsLoading(true);
+      if (!session.data?.user) {
+        signIn();
+      }
+      try {
+        const response = await axios.post(
+          `/api/generateSlides`,
+          {
+            prompt: inputValue.trim(),
           },
-        }
-      );
-    } catch (error) {
-      console.error(`error while sending message ${error}`);
-    } finally {
-      setIsLoading(false);
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        const result: WorkspaceWithInteraction = await response.data;
+        // setting context for workspace
+        setWorkspace(result);
+        setWorkspaceId(result.id);
+        // setting context for interaction
+        const interaction = result.Interactions[0] as InteractionWithResponse;
+        localStorage.setItem("interactionId", interaction.id);
+
+        router.push(`/workspace/${result.id}/interaction/${interaction.id}`);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
   return (

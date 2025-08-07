@@ -73,7 +73,7 @@ export const Landing = () => {
           {/* Icon */}
 
           {/* Title */}
-          <h1 className="text-4xl sm:text-6xl lg:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white via-purple-200 to-blue-200 mb-6 leading-tight">
+          <h1 className=" text-4xl sm:text-6xl lg:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white via-purple-200 to-blue-200 mb-6 leading-tight">
             Generate. Edit. Present.
             <span className="block text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400">
               AI-Powered Slides at Your Fingertips.
@@ -91,7 +91,7 @@ export const Landing = () => {
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                   placeholder="Enter your topic here"
-                  className="flex-1 px-6 py-4 sm:py-5 text-white placeholder-gray-400 bg-transparent border-none outline-none text-base sm:text-lg"
+                  className="font-mono flex-1 px-6 py-4 sm:py-5 text-white placeholder-gray-400 bg-transparent border-none outline-none text-base sm:text-lg"
                 />
                 <button
                   type="submit"
@@ -117,7 +117,7 @@ export const Landing = () => {
           </form>
 
           {/* Description */}
-          <p className="lg:p-9 md:p-6 p-4 text-lg sm:text-xl lg:text-xl text-gray-300 mb-12 max-w-3xl mx-auto leading-relaxed font-light">
+          <p className="font-mono  md:p-10 p-8 md:text-lg text-md text-gray-300 mb-12 max-w-3xl mx-auto leading-relaxed font-light">
             Slides AI is your intelligent slide creator. Just enter a topic, and
             watch AI generate a clean, editable deck tailored to your prompt.
             Customize it in our intuitive editor and export to PDF or PowerPoint

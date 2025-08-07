@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Github, Menu, TriangleAlert, User2, X } from "lucide-react";
 import { Button } from "./ui/button";
 import { signIn, useSession } from "next-auth/react";
 import { UserAvatar } from "./UserAvatar";
@@ -9,9 +9,21 @@ const Navbar: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { data } = useSession();
   const navItems = [
-    { name: "Report an Issue", href: "#" },
-    { name: "Contribute", href: "#" },
-    { name: "Contact", href: "#" },
+    {
+      name: "Report Issue",
+      href: "https://github.com/ShobhitPatra/Slides-ai/issues",
+      Icon: TriangleAlert,
+    },
+    {
+      name: "Contribute",
+      href: "https://github.com/ShobhitPatra/Slides-ai",
+      Icon: Github,
+    },
+    {
+      name: "Contact",
+      href: "https://www.linkedin.com/in/shobhit-patra-4a4243264/",
+      Icon: User2,
+    },
   ];
 
   return (
@@ -30,11 +42,12 @@ const Navbar: React.FC = () => {
             <div className="ml-10 flex items-baseline space-x-8">
               {navItems.map((item) => (
                 <a
-                  key={item.name}
                   href={item.href}
-                  className="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-all duration-200 hover:bg-gray-800 rounded-lg"
+                  key={item.name}
+                  className="flex items-center text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-all duration-200 hover:bg-gray-800 rounded-lg"
                 >
-                  {item.name}
+                  <item.Icon className="text-white h-4 w-4 m-1 " />
+                  <h3 className="font-mono">{item.name}</h3>
                 </a>
               ))}
               {!data?.user ? (
@@ -74,12 +87,12 @@ const Navbar: React.FC = () => {
             <div className="px-2 pt-2 pb-3 space-y-1 bg-black/20 backdrop-blur-md rounded-lg mt-2 border border-white/10">
               {navItems.map((item) => (
                 <a
-                  key={item.name}
                   href={item.href}
-                  className="text-gray-300 hover:text-white block px-3 py-2 text-base font-medium transition-all duration-200 hover:bg-white/5 rounded-lg"
-                  onClick={() => setIsMobileMenuOpen(false)}
+                  key={item.name}
+                  className="flex items-center text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-all duration-200 hover:bg-gray-800 rounded-lg"
                 >
-                  {item.name}
+                  <item.Icon className="text-white h-4 w-4 m-1 " />
+                  <h3 className="font-mono">{item.name}</h3>
                 </a>
               ))}
             </div>
