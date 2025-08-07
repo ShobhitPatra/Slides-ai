@@ -2,6 +2,7 @@ import { BackgroundColorTool } from "../tools/BackgroundColorTool";
 import { ObjectTools } from "../tools/ObjectTools";
 import { TextTools } from "../tools/TextTools";
 import { Separator } from "../ui/separator";
+import { ChatInputBox } from "./ChatInputBox";
 
 export const Toolbar = () => {
   return (
@@ -11,6 +12,9 @@ export const Toolbar = () => {
       <BackgroundColorTool />
       <Separator className="bg-gray-600" />
       <ObjectTools />
+      <Separator className="bg-gray-600" />
+
+      <ChatInputBox />
     </div>
   );
 };

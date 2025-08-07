@@ -32,8 +32,9 @@ export const WorkspaceScreen = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-slate-900 to-black relative overflow-hidden">
       <Topbar />
-      <div className="flex  ">
+      <div className="flex ">
         {isLoading ? <Loader2 className="animate-spin" /> : <CanvasArea />}
+
         <Toolbar />
       </div>
     </div>

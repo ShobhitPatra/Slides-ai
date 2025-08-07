@@ -1,16 +1,15 @@
 "use client";
-import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
+
 import { LogOut } from "lucide-react";
 import { signOut } from "next-auth/react";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
 export const UserAvatar = ({ image }: { image: string | Blob | undefined }) => {
   return (
     <div className="flex justify-center items-center">
-      <Avatar className="flex flex-col items-center">
-        <AvatarImage
-          className="h-8 w-8 rounded-full hover:scale-105 transition-all"
-          src={image}
-        />
+      <Avatar>
+        <AvatarImage src={image} alt="@shadcn" />
+        <AvatarFallback>CN</AvatarFallback>
       </Avatar>
       <LogOut
         onClick={() => signOut()}
